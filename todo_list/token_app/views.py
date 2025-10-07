@@ -1,4 +1,5 @@
 import datetime
+import json
 from django.http import JsonResponse
 from django.shortcuts import render
 import jwt
@@ -14,18 +15,18 @@ from rest_framework.permissions import AllowAny
 def pair(request):
     email = request.data.get('email')
     password = request.data.get('password')
-    
-    user = User.objects.get(email==email, password==password)
+
+    user = User.objects.get(email=email,password=password)
 
     if user is not None:
         payload = {
             'user_id': user.id,
-            'exp': datetime.now(),
+            'exp': datetime.datetime.now(),
             'token_type': 'access'
         }
 
         token = jwt.encode(payload=payload, key='mySecretKey')
-        return JsonResponse({'success':'true', 'token':token, 'user':user})
+        return JsonResponse({'success':'true', 'token':token})
     else:
         return JsonResponse({'success':'false', 'msg':'The credentials provided are invalid.'})
 
