@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
+from django.core.serializers import serialize
 
 from authentication.models import User
 
@@ -27,3 +28,10 @@ def create_user(request):
     )
     new_user.save()
     return HttpResponse("create_user response")
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def list_all_users(request):
+    users = User.objects.all()
+    users_json = serialize('json', users)
+    return HttpResponse(users_json, content_type='application/json')

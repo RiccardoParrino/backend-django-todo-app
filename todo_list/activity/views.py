@@ -8,14 +8,12 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 @api_view(['GET'])
 def findAll(request):
-    permission_classes = (IsAuthenticated, )
     activities = service.findAll()
     activities_json = serialize('json', activities)
     return HttpResponse(activities_json, content_type='application/json')
 
 @api_view(['POST'])
 def create(request):
-    permission_classes = (IsAuthenticated, )
     author = request.data['author']
     name = request.data['name']
     date = request.data['date']
@@ -26,7 +24,6 @@ def create(request):
 
 @api_view(['PATCH'])
 def update(request):
-    permission_classes = (IsAuthenticated, )
     name = request.data['name']
     new_name = request.data['new_name']
     new_date = request.data.get('new_date')
@@ -37,14 +34,6 @@ def update(request):
 
 @api_view(['DELETE'])
 def delete(request):
-    permission_classes = (IsAuthenticated, )
     name = request.data['name']
     service.delete(name)
     return HttpResponse('delete method')
-
-# class HelloView(APIView):
-#     permission_classes = (IsAuthenticated, )
-
-#     def get(self, request):
-#         content = {'message': 'Hello, GeeksforGeeks'}
-#         return Response(content)
