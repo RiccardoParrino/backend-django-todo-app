@@ -1,3 +1,4 @@
 todo_list
 activity/__pycache__
+activity/migrations
 db.sqlite3
