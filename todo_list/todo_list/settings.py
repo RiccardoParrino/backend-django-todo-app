@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'activity',
     'rest_framework',
     'rest_framework_simplejwt',
+    'authentication',
+    'token_app'
 ]
 
 MIDDLEWARE = [
