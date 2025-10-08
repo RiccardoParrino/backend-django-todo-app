@@ -1,6 +1,6 @@
 import datetime
 import json
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import jwt
 
@@ -21,17 +21,37 @@ def pair(request):
     if user is not None:
         payload = {
             'user_id': user.id,
+            'username': user.email,
+            'name': user.name,
+            'surname': user.surname,
             'exp': datetime.datetime.now(),
             'token_type': 'access'
         }
 
+        refresh_payload = {
+            'user_id': user.id,
+            'username': user.email,
+            'name': user.name,
+            'surname': user.surname,
+            'exp': datetime.datetime.now() + datetime.timedelta(7),
+            'token_type': 'access'
+        }
+
         token = jwt.encode(payload=payload, key='mySecretKey')
-        return JsonResponse({'success':'true', 'token':token})
+        refresh_token = jwt.encode(payload=refresh_payload, key='mySecretKey')
+        return JsonResponse({'success':'true', 'access_token':token, 'refresh_token':refresh_token})
     else:
         return JsonResponse({'success':'false', 'msg':'The credentials provided are invalid.'})
 
 def refresh(request):
     return None
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
 def verify(request):
-    return None
+    token = request.headers['Authorization'].split()[1] + '123'
+    try:
+        decoded = jwt.decode(token, key='mySecretKey', algorithms='HS256')
+        return HttpResponse("Valid token", status='200')
+    except:
+        return HttpResponse("Invalid token", status='401')
