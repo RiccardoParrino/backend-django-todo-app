@@ -43,13 +43,32 @@ def pair(request):
     else:
         return JsonResponse({'success':'false', 'msg':'The credentials provided are invalid.'})
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
 def refresh(request):
-    return None
+    token = request.headers['Authorization'].split()[1]
+    try:
+        decoded = jwt.decode(token, key='mySecretKey', algorithms='HS256')
+
+        payload = {
+            'user_id': decoded['user_id'],
+            'username': decoded['username'],
+            'name': decoded['name'],
+            'surname': decoded['surname'],
+            'exp': datetime.datetime.now(),
+            'token_type': 'access'
+        }
+
+        token = jwt.encode(payload=payload, key='mySecretKey')
+
+        return JsonResponse({'success':'true', 'access_token':token})
+    except:
+        return HttpResponse("Invalid token", status='401')
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def verify(request):
-    token = request.headers['Authorization'].split()[1] + '123'
+    token = request.headers['Authorization'].split()[1]
     try:
         decoded = jwt.decode(token, key='mySecretKey', algorithms='HS256')
         return HttpResponse("Valid token", status='200')
