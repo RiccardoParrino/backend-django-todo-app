@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'token_app.my_middleware.LoggingMiddleware',
+    'logger.middleware.LoggingMiddleware',
     'authentication.auth_middleware.AuthenticationMiddleware'
 ]
 
@@ -106,8 +106,8 @@ DATABASES = {
 # Cache 
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backend.redis.RedisCache",
-        "LOCATION": "redis://admin:admin@127.0.0.1:6379"
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379"
     }
 }
 
