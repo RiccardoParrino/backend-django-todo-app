@@ -1,4 +1,5 @@
-from ..token_app import service as token_service
+from django.http import HttpResponse
+from token_app import service as token_service
 
 class AuthenticationMiddleware:
     def __init__(self, get_response):
@@ -13,6 +14,7 @@ class AuthenticationMiddleware:
             '/api/auth/listAllUser',
         ]
         if (request.path in allow_any_path == False):
-            token_service.verify(request)
-        response = self.get_response(request)
-        return response
+            if token_service.verify(request):
+                return self.get_response(request)
+            else:
+                return HttpResponse("Unhautorized: Invalid token", status='401')
