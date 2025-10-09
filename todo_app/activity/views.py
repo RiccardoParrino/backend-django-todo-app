@@ -6,7 +6,6 @@ from django.core import serializers
 
 # Create your views here.
 class ActivityView(View):
-
     def get (self, request, *args, **kwargs):
         data = serializers.serialize("json", Activity.objects.all())
         return HttpResponse(data)

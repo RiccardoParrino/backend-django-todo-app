@@ -16,8 +16,8 @@ class UserView(View):
     
     def post(self, request, *args, **kwargs):
         user = User.objects.create_user(
-            username='admin',
-            email='admin',
-            password='admin'
+            username=request.data['username'],
+            email=request.data['email'],
+            password=request.data['password']
         )
         return HttpResponse('ok')
