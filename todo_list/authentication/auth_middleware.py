@@ -13,7 +13,6 @@ class AuthenticationMiddleware:
             '/api/auth/listAllUser',
         ]
         if (request.path in allow_any_path == False):
-            print("Hi from Auth middleware")
             if token_service.verify(request):
                 print(token_service.verify(request))
                 return self.get_response(request)
