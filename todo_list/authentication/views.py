@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from django.core.serializers import serialize
 
-from authentication.models import User
+from django.contrib.auth.models import User
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -16,17 +16,13 @@ def login(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def create_user(request):
-    email = request.data.get('email')
-    password = request.data.get('password')
-    name = request.data.get('name')
-    surname = request.data.get('surname')
-    new_user = User(
-        email=email,
-        password=password,
-        name=name,
-        surname=surname
+
+    new_user = User.objects.create_user(
+        username=request.data['username'],
+        email=request.data['email'],
+        password=request.data['password']
     )
-    new_user.save()
+
     return HttpResponse("create_user response")
 
 @api_view(['GET'])
