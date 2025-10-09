@@ -53,7 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'token_app.my_middleware.LoggingMiddleware',
+    'logger.middleware.LoggingMiddleware',
+    'authentication.auth_middleware.AuthenticationMiddleware'
 ]
 
 REST_FRAMEWORK = {
@@ -102,6 +103,13 @@ DATABASES = {
     }
 }
 
+# Cache 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379"
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
