@@ -15,7 +15,7 @@ from . import service
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def pair(request):
-    [access_token, refresh_token] = pair(request)
+    [access_token, refresh_token] = service.pair(request)
     if access_token:
         return JsonResponse({'success':'true', 'access_token':access_token, 'refresh_token':refresh_token})
     else:
