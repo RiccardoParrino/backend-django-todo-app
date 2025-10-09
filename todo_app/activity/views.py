@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from .models import Activity
 from django.core import serializers
 
 # Create your views here.
-class Activity(View):
+class ActivityView(View):
+
     def get (self, request, *args, **kwargs):
         data = serializers.serialize("json", Activity.objects.all())
-        return JsonResponse(data)
+        return HttpResponse(data)
 
     def post (self, request, *args, **kwargs):
         return HttpResponse("Hi from POST Activity!")
