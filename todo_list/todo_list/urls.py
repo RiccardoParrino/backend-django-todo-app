@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework_simplejwt import views as jwt_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('activity/', include('activity.urls'))
+    path('activity/', include('activity.urls'), name="activity_endpoints"),
+    path('api/token/', include('token_app.urls'), name="token_endpoints"),
+    path('api/auth/', include('authentication.urls'), name="auth_endpoints")
 ]
