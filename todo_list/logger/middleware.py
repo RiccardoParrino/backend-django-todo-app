@@ -9,6 +9,5 @@ class LoggingMiddleware:
             cache.set(request.path, 1)
         else:
             cache.set(request.path, freq+1)
-        print(cache.get(request.path))
         response = self.get_response(request)
         return response
