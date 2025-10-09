@@ -8,14 +8,14 @@ from rest_framework.decorators import permission_classes
 
 # Create your views here.
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def findAll(request):
+    print("ciaooooooooooooooooo")
     activities = service.findAll()
     activities_json = serialize('json', activities)
     return HttpResponse(activities_json, content_type='application/json')
 
 @api_view(['POST'])
-@permission_classes([AllowAny])
 def create(request):
     author = request.data['author']
     name = request.data['name']
@@ -26,7 +26,6 @@ def create(request):
     return HttpResponse(True, content_type='application/json')
 
 @api_view(['PATCH'])
-@permission_classes([AllowAny])
 def update(request):
     name = request.data['name']
     new_name = request.data['new_name']
@@ -37,7 +36,6 @@ def update(request):
     return HttpResponse(True, content_type='application/json')
 
 @api_view(['DELETE'])
-@permission_classes([AllowAny])
 def delete(request):
     name = request.data['name']
     service.delete(name)

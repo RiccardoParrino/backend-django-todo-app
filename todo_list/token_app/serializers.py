@@ -11,10 +11,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs: dict[str, Any]) -> dict[Any, Any]:
         data = {}
 
-        user = User(
-            username = 'admin',
-            password = 'admin'
-        )
+        user = User.objects.get
 
         refresh = self.get_token(user)
 
