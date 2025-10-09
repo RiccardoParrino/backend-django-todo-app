@@ -21,3 +21,9 @@ class UserView(View):
             password=request.data['password']
         )
         return HttpResponse('ok')
+    
+    def update(self, request, *args, **kwargs):
+        return HttpResponse("Update user")
+
+    def delete(self, request, *args, **kwargs):
+        return HttpResponse("Delete user")
