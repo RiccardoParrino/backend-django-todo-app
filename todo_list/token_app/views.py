@@ -15,14 +15,25 @@ from . import service
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def pair(request):
-    return service.pair(request)
+    [access_token, refresh_token] = pair(request)
+    if access_token:
+        return JsonResponse({'success':'true', 'access_token':access_token, 'refresh_token':refresh_token})
+    else:
+        return JsonResponse({'success':'false', 'msg':'The credentials provided are invalid.'})
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def refresh(request):
-    return service.refresh(request)
+    token = service.refresh(request)
+    if token:
+        return JsonResponse({'success':'true', 'access_token':token})
+    else:
+        return HttpResponse("Invalid token", status='401')
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def verify(request):
-    return service.verify(request)
+    if service.verify(request):
+        return HttpResponse("Valid token", status='200')
+    else:
+        return HttpResponse("Invalid token", status='401')

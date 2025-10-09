@@ -1,3 +1,5 @@
+from ..token_app import service as token_service
+
 class AuthenticationMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -11,6 +13,6 @@ class AuthenticationMiddleware:
             '/api/auth/listAllUser',
         ]
         if (request.path in allow_any_path == False):
-            print("token to be verified")
+            token_service.verify(request)
         response = self.get_response(request)
         return response

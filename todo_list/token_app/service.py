@@ -33,9 +33,9 @@ def pair(request):
 
         token = jwt.encode(payload=payload, key='mySecretKey')
         refresh_token = jwt.encode(payload=refresh_payload, key='mySecretKey')
-        return JsonResponse({'success':'true', 'access_token':token, 'refresh_token':refresh_token})
+        return [token, refresh_token]
     else:
-        return JsonResponse({'success':'false', 'msg':'The credentials provided are invalid.'})
+        return False
 
 def refresh(request):
     token = request.headers['Authorization'].split()[1]
@@ -53,14 +53,14 @@ def refresh(request):
 
         token = jwt.encode(payload=payload, key='mySecretKey')
 
-        return JsonResponse({'success':'true', 'access_token':token})
+        return token
     except:
-        return HttpResponse("Invalid token", status='401')
+        return False
     
 def verify(request):
     token = request.headers['Authorization'].split()[1]
     try:
         decoded = jwt.decode(token, key='mySecretKey', algorithms='HS256')
-        return HttpResponse("Valid token", status='200')
+        return True
     except:
-        return HttpResponse("Invalid token", status='401')
+        return False
